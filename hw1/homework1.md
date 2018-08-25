@@ -16,3 +16,15 @@ is related to how arduous it is to vet and adds to risk. This can save time and 
 
 ## Questions 2.2
 
+### Part 1
+Equation to predict Y.                                                                        
+yHat = 0.08158492 -0.0010065348\*A1 + -0.0011729048\*A2 + -0.0016261967\*A3 + 0.0030064203\*A8 + 1.0049405641\*A9 + -0.0028259432\*A10+
+0.0002600295\* A11 + -0.0005349551\* A12+ -0.0012283758\*A14 + 0.1063633995\*A15 
+
+Value for C used was 100. Error does not seem to decrease significantly from 1e-2 to 1e2. 
+
+### Part 2
+
+
+### Part 3
+  
