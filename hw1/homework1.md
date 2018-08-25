@@ -23,8 +23,14 @@ yHat = 0.08158492 -0.0010065348\*A1 + -0.0011729048\*A2 + -0.0016261967\*A3 + 0.
 
 Value for C used was 100. Error does not seem to decrease significantly from 1e-2 to 1e2. 
 
-### Part 2
+![ksvm-error-plot](/hw1/Rplot-ksvm-errors.png)
 
+### Part 2
+_optional_ Try out different kernals for the SVM to see if a soft boundry will improve accuracy. 
 
 ### Part 3
-  
+See code for details. 
+
+Best value for K appears to be 5 after trying 1 through 10. You can see the error quickly drops from 4 to 5 and then hovers around 14-15%. 
+
+![knn-error-plot](/hw1/Rplot-knn.png)
