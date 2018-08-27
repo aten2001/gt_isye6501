@@ -146,7 +146,8 @@ my_ksvm <- function(data, c = 100, p = F, my_kernal="vanilladot"){
 }
 
 c_vals <- 100
-kernals <- c('rbfdot', 'polydot', 'vanilladot', 'tanhdot', 'laplacedot', 'besseldot', 'anovadot', 'splinedot')
+kernals <- c('rbfdot', 'polydot', 'vanilladot', 'tanhdot', 'laplacedot', 
+      'besseldot', 'anovadot', 'splinedot')
 
 all_errors <- c()
 counter <- 1
