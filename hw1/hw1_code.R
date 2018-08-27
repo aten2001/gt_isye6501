@@ -64,18 +64,18 @@ plot(x = c_vals, y= all_errors, log="x")
 my_ksvm(data = credit_data, c = 100, p = T)
 
 
-## Part 2. (optional) Choose a nonlinear kernal.
+## Part 2. (optional) Choose a nonlinear kernel.
 
-# Trying out different kernals to see if we can get better performance
+# Trying out different kernels to see if we can get better performance
 
-my_ksvm <- function(data, c = 100, p = F, my_kernal="vanilladot"){ 
+my_ksvm <- function(data, c = 100, p = F, my_kernel="vanilladot"){ 
   require(kernlab)
   # call ksvm. Vanilladot is a simple linear kernel.
   model <- ksvm(
     data[, 1:10], 
     data[, 11], 
     type = "C-svc", 
-    kernel = my_kernal, 
+    kernel = my_kernel, 
     C = c, 
     scaled = TRUE
   )
@@ -101,23 +101,23 @@ my_ksvm <- function(data, c = 100, p = F, my_kernal="vanilladot"){
 }
 
 c_vals <- 100
-kernals <- c('rbfdot', 'polydot', 'vanilladot', 'tanhdot', 'laplacedot', 'besseldot', 'anovadot', 'splinedot')
+kernels <- c('rbfdot', 'polydot', 'vanilladot', 'tanhdot', 'laplacedot', 'besseldot', 'anovadot', 'splinedot')
 
 all_errors <- c()
 counter <- 1
-for (kern in kernals){
+for (kern in kernels){
  #print(kern)
  k_error <- my_ksvm(
      data = credit_data, 
      c = c_vals, 
-     my_kernal=kern
+     my_kernel=kern
  )  
  all_errors[counter] <- k_error
  counter <- counter + 1
  print(paste(kern, ": ", k_error, sep=""))
 }
 
-# laplace fits the data perfectly!! wow. Adding a nonlinear kernal helps a lot
+# laplace fits the data perfectly!! wow. Adding a nonlinear kernel helps a lot
 
 ## Part 3.  Use Knn to create a classification model.
 # Goal: Suggest a good value for the number of neighbors.
