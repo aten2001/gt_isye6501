@@ -4,13 +4,13 @@
 
 _Describe a situation or problem from your job, everyday life, current events, etc., for which a classification model would be appropriate. List some (up to 5) predictors that you might use._
 
-**ANSWER**: Classification is one of the major pillers machine learning stands on. 
-From building up AI to classify images to investers classifying investments, 
-these methods are everywhere. At my job we were working with an inssurance 
-company to classify incidents. The insurance angency want to classify scenarios into different levels of risk, low, medium, and high. 
+**ANSWER**: Classification is one of the major pillars machine learning stands on. 
+From building up AI to classify images to inverters classifying investments, 
+these methods are everywhere. At my job we were working with an insurance 
+company to classify incidents. The insurance agency want to classify scenarios into different levels of risk, low, medium, and high. 
 Features that we were able to use were a ranking of how labor intensive it was to vet the claim, 
-the amount paid out in an average case previously, how prevelent or often the claim occured, 
-and how many fraudulent cliams have been determined. Although it is impossible to know a total number of fraudlent claims it 
+the amount paid out in an average case previously, how prevalent or often the claim occurred, 
+and how many fraudulent claims have been determined. Although it is impossible to know a total number of fraudulent claims it 
 is related to how arduous it is to vet and adds to risk. This can save time and help make the insurance company make pricing choices  
 
 
@@ -40,7 +40,7 @@ credit_data <- as.matrix( read.table(
 # Part 1.
 
 # We want to find a good value for C below. We'll have to try a few and plot their
-# results next to eachother to see which has the lowest error. % error here
+# results next to each other to see which has the lowest error. % error here
 
 my_ksvm <- function(data, c = 100, p = F){ 
   require(kernlab)
@@ -91,11 +91,11 @@ my_ksvm(data = credit_data, c = 100, p = T)
 ```
 
 ### Part 2
-_optional_ Try out different kernals for the SVM to see if a soft boundry will improve accuracy. 
-Increaseing the flexability of our kernal by making it nonlinear. I tried running the my same code 
-looping through the different kernals. below are the results.
+_optional_ Try out different kernels for the SVM to see if a soft boundary will improve accuracy. 
+Increasing the flexibility of our kernel by making it nonlinear. I tried running the my same code 
+looping through the different kernels. below are the results.
 
-| Kernal   | Error             |
+| Kernel   | Error             |
 |:---------|------------------:|
 |rbfdot    | 0.0412844036697247|
 |polydot   | 0.136085626911315 |
@@ -107,20 +107,20 @@ looping through the different kernals. below are the results.
 |splinedot | 0.0214067278287462|
 
 
-As sceen above, the laplace kernal fits the data perfectly. The RBF and Spline kernals also perform 
-very well. Nonlinear kernals are definitely something I should read more about for the future. 
+As seen above, the Laplace kernel fits the data perfectly. The RBF and Spline kernels also perform 
+very well. Nonlinear kernels are definitely something I should read more about for the future. 
 
 ### code
 
 ```R
-my_ksvm <- function(data, c = 100, p = F, my_kernal="vanilladot"){ 
+my_ksvm <- function(data, c = 100, p = F, my_kernel="vanilladot"){ 
   require(kernlab)
   # call ksvm. Vanilladot is a simple linear kernel.
   model <- ksvm(
     data[, 1:10], 
     data[, 11], 
     type = "C-svc", 
-    kernel = my_kernal, 
+    kernel = my_kernel, 
     C = c, 
     scaled = TRUE
   )
@@ -146,17 +146,17 @@ my_ksvm <- function(data, c = 100, p = F, my_kernal="vanilladot"){
 }
 
 c_vals <- 100
-kernals <- c('rbfdot', 'polydot', 'vanilladot', 'tanhdot', 'laplacedot', 
+kernels <- c('rbfdot', 'polydot', 'vanilladot', 'tanhdot', 'laplacedot', 
       'besseldot', 'anovadot', 'splinedot')
 
 all_errors <- c()
 counter <- 1
-for (kern in kernals){
+for (kern in kernels){
  #print(kern)
  k_error <- my_ksvm(
      data = credit_data, 
      c = c_vals, 
-     my_kernal=kern
+     my_kernel=kern
  )  
  all_errors[counter] <- k_error
  counter <- counter + 1
