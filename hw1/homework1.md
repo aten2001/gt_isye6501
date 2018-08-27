@@ -92,7 +92,77 @@ my_ksvm(data = credit_data, c = 100, p = T)
 
 ### Part 2
 _optional_ Try out different kernals for the SVM to see if a soft boundry will improve accuracy. 
+Increaseing the flexability of our kernal by making it nonlinear. I tried running the my same code 
+looping through the different kernals. below are the results.
 
+| Kernal   | Error             |
+|:---------|------------------:|
+|rbfdot    | 0.0412844036697247|
+|polydot   | 0.136085626911315 |
+|vanilladot| 0.136085626911315 |
+|tanhdot   | 0.2782874617737   |
+|laplacedot| 0                 |
+|besseldot | 0.0749235474006116|
+|anovadot  | 0.0932721712538226|
+|splinedot | 0.0214067278287462|
+
+
+As sceen above, the laplace kernal fits the data perfectly. The RBF and Spline kernals also perform 
+very well. Nonlinear kernals are definitely something I should read more about for the future. 
+
+### code
+
+```R
+my_ksvm <- function(data, c = 100, p = F, my_kernal="vanilladot"){ 
+  require(kernlab)
+  # call ksvm. Vanilladot is a simple linear kernel.
+  model <- ksvm(
+    data[, 1:10], 
+    data[, 11], 
+    type = "C-svc", 
+    kernel = my_kernal, 
+    C = c, 
+    scaled = TRUE
+  )
+  
+  # calculate a1…am
+  a <- colSums(model@xmatrix[[1]] * model@coef[[1]])
+
+  
+  # calculate a0 ~ intercept 
+  a0 <- -model@b
+  
+  if (p){
+    print(a)  # print coefficients to console
+    print("A0")
+    print(a0)
+  }
+  
+  # see what the model predicts
+  pred <- predict(model, data[, 1:10])
+  
+  # see what fraction of the model’s predictions match the actual classification
+  error <- model@error
+}
+
+c_vals <- 100
+kernals <- c('rbfdot', 'polydot', 'vanilladot', 'tanhdot', 'laplacedot', 'besseldot', 'anovadot', 'splinedot')
+
+all_errors <- c()
+counter <- 1
+for (kern in kernals){
+ #print(kern)
+ k_error <- my_ksvm(
+     data = credit_data, 
+     c = c_vals, 
+     my_kernal=kern
+ )  
+ all_errors[counter] <- k_error
+ counter <- counter + 1
+ print(paste(kern, ": ", k_error, sep=""))
+}
+
+```
 ### Part 3
 See code for details. 
 
