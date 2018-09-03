@@ -328,7 +328,7 @@ idx <- which.min(all_errs)
 paste("Best features:", all_features[idx])
 ```
 
-![iris_feature_error](./iris_error.pdf)
+![iris_feature_error](https://cdn.rawgit.com/lwileczek/gt_isye6501/5cf7b126/hw2/iris_clusters.pdf)
 
 From our code above we find the best selection of features is to just use the third 
 feature _Petal.Length_. Doing this we are able to cluster just under 95% of the flowers. 
@@ -343,4 +343,4 @@ Here is how we classified the the points using just petal length.
 
 We can use ggplot to show these results as well. 
 
-![iris_clusters](./iris_clusters.pdf)
+![iris_clusters](/hw2/iris_clusters.pdf)
