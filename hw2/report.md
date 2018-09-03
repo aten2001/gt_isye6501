@@ -328,7 +328,7 @@ idx <- which.min(all_errs)
 paste("Best features:", all_features[idx])
 ```
 
-![iris_feature_error](/hw2/iris_errors.pdf)
+![iris_feature_error](/hw2/iris_error.pdf)
 
 From our code above we find the best selection of features is to just use the third 
 feature _Petal.Length_. Doing this we are able to cluster just under 95% of the flowers. 
