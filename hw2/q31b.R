@@ -81,10 +81,15 @@ for (i in c_vals){
 
 print(data.frame(c_val=c_vals, error=all_errors))
 library(ggplot2)
-p <- ggplot(data.frame(c_val=c_vals, error=all_errors), aes(c_val, error))
+p <- ggplot(
+  data.frame(c_val=c_vals, error=all_errors), 
+  aes(c_val, error), 
+)
 p <- p + geom_point()
+p <- p + scale_x_log10()
 print(p)
 
 ksvm_model <- my_ksvm(train = train, test=validate, c = 100)
-cat("Error: ", ksvm_model[[2]],"\n", 
-"Coefficients: ", cat(ksvm_model[[1]], sep="+"), "\n", sep="")
+print(paste("Error: ", ksvm_model[[2]])) 
+cat("Coefficients: ") 
+cat(ksvm_model[[1]], "\n", sep=", ")

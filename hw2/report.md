@@ -249,3 +249,98 @@ Once they have clustered the visiters they can provide deals to the middle group
 _likely to buy_ group. 
 
 ## Questions 4.2
+The iris data set iris.txt contains 150 data points, each with four predictor variables and one
+categorical response. The predictors are the width and length of the sepal and petal of flowers and the
+response is the type of flower. The data is available from the R library datasets and can be accessed with
+iris once the library is loaded. It is also available at the UCI Machine Learning Repository
+(https://archive.ics.uci.edu/ml/datasets/Iris ). The response values are only given to see how well a
+specific method performed and should not be used to build the model.Use the R function kmeans to cluster the points as well as possible. Report the best combination of
+predictors, your suggested value of k, and how well your best clustering predicts flower type.
+
+
+R comes with the famous _iris_ data set built in. Thus we can quickly explore it with:
+
+```R
+library(datasets)
+head(iris)
+```
+```sh
+  Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+1          5.1         3.5          1.4         0.2  setosa
+2          4.9         3.0          1.4         0.2  setosa
+3          4.7         3.2          1.3         0.2  setosa
+4          4.6         3.1          1.5         0.2  setosa
+5          5.0         3.6          1.4         0.2  setosa
+6          5.4         3.9          1.7         0.4  setosa
+```
+
+Because we are know the solution we can jump to ```k=3``` as the optimal value for _k_. However, 
+if we didn't know we could do a similar process for _k_ as we will for feature selection. That is 
+to say, we will fit a cluster, then check to see the approximate error by taking the between 
+Sum of Squares and dividing it by the total Sum of Squares. A rough interpretation is: 
+how much of the variation is explaid within the clusters and not noise outside of the clusters. 
+
+We will do this by looping through all possible combination of features and selecting the one
+with the least error. 
+```R
+all_features = list(
+  1, 
+  2, 
+  3, 
+  4, 
+  c(1,2),
+  c(1,3),
+  c(1,4),
+  c(2,3),
+  c(2,4),
+  c(3,4),
+  c(1,2,3),
+  c(1,2,4),
+  c(1,4,3),
+  c(2,4,3),
+  c(1, 2,3, 4)
+)
+set.seed(42) # meaning of life
+
+all_errs <- rep(0, length(all_features))
+counter <- 1
+for (i in all_features){
+  my_cluster <- kmeans(
+    iris[, i], 
+    centers = 3, 
+    iter.max = 30,
+    nstart = 10
+  )
+
+  err <- my_cluster$betweenss/my_cluster$totss
+  err <- 1 - err
+  cat("feature:", i, "\n")
+  cat("approx. error:", err, "\n")
+  all_errs[counter] <- err
+  counter <- counter + 1
+}
+
+p <- plot(x = 1:length(all_errs), y= all_errs)
+print(p)
+
+idx <- which.min(all_errs)
+
+paste("Best features:", all_features[idx])
+```
+
+![iris_feature_error](./iris_error.pdf)
+
+From our code above we find the best selection of features is to just use the third 
+feature _Petal.Length_. Doing this we are able to cluster just under 95% of the flowers. 
+
+Here is how we classified the the points using just petal length.
+```R
+    setosa versicolor virginica
+  1      0         48         6
+  2     50          0         0
+  3      0          2        44
+```
+
+We can use ggplot to show these results as well. 
+
+![iris_clusters](./iris_clusters.pdf)
