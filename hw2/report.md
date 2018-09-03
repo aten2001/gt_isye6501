@@ -236,4 +236,16 @@ These results show that we should expect our error to be around
 Describe a situation or problem from your job, everyday life, current events, etc., for which a clustering
 model would be appropriate. List some (up to 5) predictors that you might use.
 
-ans
+Cluster could be used when a company wants to spontaneously give internet viewers a deal to urge them to make 
+a purchase. The company could check to see how long the user has been on their website, how many times that 
+user/ip address has been to the website, the products they have clicked on, and where geographically the 
+user/ip is pinging from. You could cluster visiters into the following groups: 
+
+  - Likely to buy
+  - somewhat likely
+  - not likely
+
+Once they have clustered the visiters they can provide deals to the middle group to bump them into the 
+_likely to buy_ group. 
+
+## Questions 4.2
