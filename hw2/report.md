@@ -2,9 +2,10 @@
 
 ## Questins 3.1 
 Using the same data set (credit\_card\_data.txt or credit\card\_data-headers.txt) as  
-in Question 2.2, use the ksvm or kknn function to find a good classifier:
-  a. Using cross-validation (do this for the k-nearest-neighbors model; SVM is optional);  
-  b. Splitting the data into training, validation, and test data sets 
+in Question 2.2, use the ksvm or kknn function to find a good classifier:  
+
+  1. Using cross-validation (do this for the k-nearest-neighbors model; SVM is optional);  
+  2. Splitting the data into training, validation, and test data sets 
   (pick either KNN or SVM; the other is optional).
 
 
@@ -88,9 +89,9 @@ my_knn <- function(data, my_k=10, my_folds=10){
   }
   
   # find the average error over the folds and report 
-  my\_error <- mean(fold\_errors)
+  my_error <- mean(fold_errors)
 
-  return(my\_error)
+  return(my_error)
 }
 ```
 
@@ -138,4 +139,101 @@ most likely run _leave-one-out cross validation_ [(LOOCV)](https://en.wikipedia.
 
 
 ### Part B
+We are going to split the dataset into three groups: train, test, and validation. Before we do that we 
+must check for any patters that may be in the data. There are no dates or geographic information in 
+the data, so no obvious patters stick out. In addition, we want to make sure we don't split the groups 
+up such that none of the groups have a higher proportion of one class/case than another. 
 
+```R
+Class 1: 296 total casses: 654 Percent: 0.4525994
+```
+We can assume the data is stored randomly and send every fourth value to the test set and every 6th point to 
+the validation set. Then check to make sure the same proportion of case 1 is in each of the three sets.
+
+```R
+# split data up
+n <- nrow(credit_data)
+train <- credit_data[c(((c(1:n) %% 8) !=3) & ((c(1:n) %% 8) !=5)), ] # 75%
+test <- credit_data[c(1:n) %% 8 ==3, ]  # 12.5%
+validate <- credit_data[c(1:n) %% 8 ==5, ] # 12.5%
+```
+These three groups will have the following proportions of case 1:
+
+```R
+train:  0.4489796
+test:   0.4756098
+val:    0.4512195
+```
+Which are all close to the entire population.  This grouping has more than 30 samples of each case in all 
+three groups which satifies our soft condition of groups that are _big_ enough. 
+<br>
+Now we can change our code from homework 1 to go off of a train and test set.
+
+```R
+my_ksvm <- function(train, test, c = 100){ 
+  # call ksvm. Vanilladot is a simple linear kernel.
+  model <- ksvm(
+    train[, 1:10], 
+    train[, 11], 
+    type = "C-svc", 
+    kernel = "vanilladot", 
+    C = c, 
+    scaled = TRUE
+  )
+  
+  # calculate a1…am
+  a <- colSums(model@xmatrix[[1]] * model@coef[[1]])
+
+  # calculate a0 ~ intercept 
+  a0 <- -model@b
+  
+  # see what the model predicts
+  pred <- predict(model, test[, 1:10])
+  
+  # see what fraction of the model’s predictions match the actual classification
+  error <- sum(abs(pred - test[, 11]))/nrow(test)
+
+  # Return everything we created and may need after.
+  return(list(coef=c(a0,a), m_error=error, svm_model=model))
+}
+```
+
+Running this code we get the following results:
+
+```R
+  c_val     error
+1 1e-05 0.4756098
+2 1e-04 0.4756098
+3 1e-03 0.2317073
+4 1e-02 0.1463415
+5 1e-01 0.1463415
+6 1e+00 0.1463415
+7 1e+01 0.1463415
+8 1e+02 0.1463415
+```
+
+As seen in the table above, the error doesn't decrease after ```0.01``` up. 
+Because of this we'll use ```C=100``` which was originially given to us. 
+We'll now test that on our validation set to get a final approximation of 
+our error. 
+
+```R
+ksvm_model <- my_ksvm(train = train, test=validate, c = 100)
+cat("Error: ", ksvm_model[[2]],"\n", 
+  "Coefficients: ", ksvm_model[[1]], "\n", sep="")
+```
+which gives us the following results:
+```R
+Error: 0.1585366 
+Coefficients: 0.07912255, -0.001567725, -0.01145886, -0.004054599, 
+  0.008312549,  1.01074, -0.007873757, 0.007556349, 0.002312918, -0.01176068, 0.124189
+```
+
+These results show that we should expect our error to be around 
+```14.6%-15.9%```.
+
+## Questions 4.1
+Describe a situation or problem from your job, everyday life, current events, etc., for which a clustering
+model would be appropriate. List some (up to 5) predictors that you might use.
+
+ans
