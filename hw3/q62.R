@@ -39,5 +39,10 @@ cusum <- function(my_vector, threshold, C = 0, type="high"){
 }
 
 
-# now to figure out a proper C & threshold.
-test <- cusum(climate_data[, 3], threshold = 70, C = 3, type="low")
+# now to figure out a proper C & threshold. 80 looks about good. 
+test <- cusum(climate_data[, 3], threshold = 80, C = 3, type="low")
+
+library(ggplot2)
+climate_data$DAY <- factor(climate_data$DAY, levels = climate_data$DAY)
+p <- ggplot(climate_data, aes(x = DAY, y = X2007) ) + geom_point(stat = "identity")
+p + scale_x_discrete(breaks=climate_data[seq(1,123, by=10), 1])
