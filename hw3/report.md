@@ -6,7 +6,61 @@ description at http://www.statsci.org/data/general/uscrime.html), test to see wh
 outliers in the last column (number of crimes per 100,000 people). Use the grubbs.test function in
 the outliers package in R
 
-__Answer__: in progress 
+__Answer__: To get a feel for our data we can look at the summary and create a box-and-whiskers plot. 
+```R
+print(summary(crimes[, "Crime"]))
+   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+  342.0   658.5   831.0   905.1  1057.5  1993.0 
+```  
+
+![box-plot](./Rplot.png)
+
+From the plot it appears as though we _may_ have three outliers on the high side. This should peak our interst to investiage further. 
+One definition of outlier related to the box-plot and summary is any value greater than 1.5\*IQR, where ```IQR = Q3-Q1```. 
+
+```R
+Q3 <- summary(crimes[, "Crime"])[5]
+
+# generic way outliers are computed. What ggplot uses
+num_of_outliers  <- sum(crimes[, "Crime"] > (1.5*Q3))  # output is 4
+```
+After running this code it suggests there are actually four outliers. This is the common way box-and-whiskers plots calculate 
+outliers so we should not be surprised by the results. To further our investigation we can check to see if there is an abnormal 
+or unexpected number of points past two standard deviations from the mean. Given a normal distribution, we expect 2.5% of our 
+data to be above <strong>μ+2σ</strong> from the [empirical rule](https://en.wikipedia.org/wiki/68%E2%80%9395%E2%80%9399.7_rule). 
+That is to say it's expected to see ```0.025 * 47 ≈ 1```. 
+
+```R
+sum(crimes[, "Crime"] > (sd(crimes[, "Crime"])*2 + mean(crimes[, "Crime"])))
+# 2
+```
+There are two values more than two standard deviations above the mean where we only expected 1. That's not two crazy so perhaps 
+there are no outliers. We can use ```grubbs.test``` to help us run a hypothesis test on if the maximum point is an outlier or not. 
+Surely if one of the points at the end of the specturm is an outlier it would be the maximum point. 
+
+```R
+gt <- outliers::grubbs.test(
+  crimes[, "Crime"], 
+  type = 10,  # test for an outlier on the high side. 
+  opposite = FALSE, 
+  two.sided = FALSE
+)
+
+print(gt$alternative)
+print(gt$p.value)
+```
+Which gives us:
+```sh
+> print(gt$alternative)
+[1] "highest value 1993 is an outlier"
+> print(gt$p.value
++ )
+[1] 0.07887486
+```
+Using the standard but arbitrary ```alpha = 0.05``` we fail to reject our null hypothesis, which means we cannot 
+accept our alternative hypothesis above. In not statistics talk, this test says there are not any outliers. Considering 
+all these points are just beyond 1.5\*IQR, 2σ, and the grubbs test failed to reject the null hypothesis __I conclude 
+there are no outliers in this column__. This means I would use all of these data points in my analysis. 
 
 ## Question 6.1
 __Question:__ Describe a situation or problem from your job, everyday life, current events, etc., for which a Change
