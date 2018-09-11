@@ -15,7 +15,7 @@ print(summary(crimes[, "Crime"]))
 
 ![box-plot](./Rplot.png)
 
-From the plot it appears as though we _may_ have three outliers on the high side. This should peak our interst to investiage further. 
+From the plot it appears as though we _may_ have three outliers on the high side. This should peak our interest to investigate further. 
 One definition of outlier related to the box-plot and summary is any value greater than 1.5\*IQR, where ```IQR = Q3-Q1```. 
 
 ```R
@@ -36,7 +36,7 @@ sum(crimes[, "Crime"] > (sd(crimes[, "Crime"])*2 + mean(crimes[, "Crime"])))
 ```
 There are two values more than two standard deviations above the mean where we only expected 1. That's not two crazy so perhaps 
 there are no outliers. We can use ```grubbs.test``` to help us run a hypothesis test on if the maximum point is an outlier or not. 
-Surely if one of the points at the end of the specturm is an outlier it would be the maximum point. 
+Surely if one of the points at the end of the spectrum  is an outlier it would be the maximum point. 
 
 ```R
 gt <- outliers::grubbs.test(
@@ -67,19 +67,8 @@ __Question:__ Describe a situation or problem from your job, everyday life, curr
 Detection model would be appropriate. Applying the CUSUM technique, how would you choose the
 critical value and the threshold?
 
-__Answer:__ CUSUM and change detection is a fundamental way of running a factory. 
-[Control charts](http://asq.org/learn-about-quality/data-collection-analysis-tools/overview/control-chart.html) 
-are common practice to ensure machines don't overload, processes aren't disrupted, and throughput is optimized. 
-There are endless example similar to the microchip example from the lecture videos. More interesting to me is 
-how airline companies use sensors to monitor the status of their planes, much like the train example from class. 
-Airplanes are catastrophic if one breaks in the air, and expensive to have them out of commision for extended periods 
-between flights. It is often far cheaper and faster to replace them between flights before a complete failure. 
-However, plane components are expensive and air line companies opperate on low margins, so replacing parts too 
-often can also cause problems. Since planes cool off and are inspected between flights, we can expect less 
-failure rates at the beggining of a flight as opposed to the end of a flight. Thus, we could set the time (T) 
-to check in more often over the duration of the flight. Each part/sensor would have its own threshold and 
-critical value dependion on how paramount it is to flight, but I would assume the critical value would be set 
-low. A false positive is a far greater alternative to having a plane fall out of the sky. 
+__Answer:__
+CUSUM and change detection is a fundamental way of running a factory. [Control charts](http://asq.org/learn-about-quality/data-collection-analysis-tools/overview/control-chart.html)  are common practice to ensure machines don't overload, processes aren't disrupted, and throughput is optimized. There are endless example similar to the microchip example from the lecture videos. More interesting to me is how airline companies use sensors to monitor the status of their planes, much like the train example from class. Airplanes are catastrophic if one breaks in the air, and expensive to have them out of commission for extended periods between flights. It is often far cheaper and faster to replace them between flights before a complete failure. However, plane components are expensive and airline companies operate on low margins, so replacing parts too often can also cause problems. Since planes cool off and are inspected between flights, we can expect less failure rates at the beginning of a flight as opposed to the end of a flight. Thus, we could set the time (T) to check in more often over the duration of the flight. Each part/sensor would have its own threshold and critical value depending on how paramount it is to flight, but I would assume the critical value would be set low. A false positive is a far greater alternative to having a plane fall out of the sky.
 
 ## Question 6.2 
 __Question(s):__
