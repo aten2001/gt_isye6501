@@ -28,15 +28,7 @@ m_temps <- m_temps[with(m_temps, order(variable)), ]  # sort the data.
 rownames(m_temps) <- 1:nrow(m_temps)  # not needed, but I a clean axis.
 
 ts_temps <- ts(as.vector(m_temps[, "value"]), start = 1996, frequency = L )
-print(ts_temps)
-
-#test <- es(
-#  ts_temps,
-#  model="AAM", 
-#  ic="BIC", 
-#  cfType="MSE", 
-#  h=L
-#)
+# print(ts_temps)
 
 hw_model <- HoltWinters(
   ts_temps,
@@ -44,13 +36,82 @@ hw_model <- HoltWinters(
   beta = NULL,
   gamma = NULL, 
   seasonal = "multiplicative", 
-  optim.start = c(alpha=0.7, beta = 0.1, gamma=0.15)
+  #optim.start = c(alpha=0.7, beta = 0.1, gamma=0.15)
 )
 
-print(paste("SSE: ", hw_model$SSE))
+#png("my_timeseries.png")
+#plot.ts(ts_temps)
+#dev.off()
+#png("HoltWinters_match.png")
+#plot(hw_model)
+#dev.off()
+#print(paste("SSE: ", hw_model$SSE))
 
-'
-require(graphics)
-plot(hw_model)
-plot(fitted(hw_model))
-'
+new_matrix <- cbind(round(as.vector(time(hw_model$fitted))),
+as.vector(hw_model$fitted[, 'xhat']))
+
+# 1996 - 2015
+for (i in 2:20) {
+  start <- (i-2)*123+1  
+  end <- (i-1)*123
+  temps[, i] <- new_matrix[c(start:end), 2]
+  print(start)
+}
+
+# for some reason having trouble populating the last column
+temps <- temps[, -21]
+print(head(temps))
+
+## now take our results and use the CUSUM to test for end of summer
+## with smoothed out results
+
+# CUSUM function
+cusum <- function(my_vector, threshold = 100, C = 0, type="high"){
+  # Type - high/low, what we are looking for. 
+  # higher change or lower change. 
+  # threshold, is our threshold
+  # C - correction value. 
+  
+  # error handeling, input an option?
+  if (!(type %in% c("low", "high"))){
+    print("type is not low or high")
+    stop()
+  }
+  output <- 0
+  n = length(my_vector)
+  # for each time step
+  for (t in 2:n){
+    # use rolling avg. because if it was the real world we wouldn't know 
+    # future points to use them in our average.
+    mu <- mean(my_vector[1:t])  # rolling avg. 
+    if (type == "high"){
+      # CUSUM formula: st = max{0, s(t-1) + (xt - mu - C)}
+      deltas <- my_vector[1:t] - mu - C
+    } else {
+      # CUSUM formula: st = max{0, s(t-1) + (mu - xt - C)}
+      deltas <- mu - my_vector[1:t]  - C
+    }
+    
+    st = max(0, deltas[1])
+    for (i in 2:t){
+      st <- max(0, st + deltas[i] )
+    }
+    
+    # check if pasted the threshold
+    if (st >= threshold){
+      print(paste("CUSUM over threshold @", t))
+      output <- t
+      break
+    }
+  }
+  return(output) # 0 if never go over threshold. 
+}
+
+
+# now to figure out a proper C & threshold. 80 looks about good. 
+# test <- cusum(climate_data[, 3], threshold = 86, C = 5, type="low")
+
+indices <- rep(0, 20)  # initiate vector
+for (year in 2:21){
+  output <- cusum(
+    climate_data[, year], 
