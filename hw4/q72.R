@@ -8,7 +8,6 @@
 library(smooth)  # for general HoltWinters
 library(ggplot2)  # to visualize results
 library(reshape2)  # melt dataframe
-require(graphics)
 
 # Read in the data
 temps <- read.table(
@@ -46,6 +45,19 @@ hw_model <- HoltWinters(
 #plot(hw_model)
 #dev.off()
 #print(paste("SSE: ", hw_model$SSE))
+png("HoltWinters_match_2years.png")
+zoomed_fit <- data.frame(
+  c(1:123), 
+  tail(hw_model$fitted[, 'xhat'], 123),
+  tail(ts_temps, 123)
+)
+colnames(zoomed_fit) <- list("date", "fit", "og")
+p1<- ggplot(zoomed_fit, aes(date)) + 
+    geom_line(aes(y = fit, colour = "fit")) + 
+    geom_line(aes(y = og, colour = "og"))
+plot(p1)
+# plot(tail(hw_model$fitted, 246))
+dev.off()
 
 new_matrix <- cbind(round(as.vector(time(hw_model$fitted))),
 as.vector(hw_model$fitted[, 'xhat']))
@@ -111,7 +123,23 @@ cusum <- function(my_vector, threshold = 100, C = 0, type="high"){
 # now to figure out a proper C & threshold. 80 looks about good. 
 # test <- cusum(climate_data[, 3], threshold = 86, C = 5, type="low")
 
-indices <- rep(0, 20)  # initiate vector
-for (year in 2:21){
+indices <- rep(0, 19)  # initiate vector
+for (year in 2:20){
   output <- cusum(
-    climate_data[, year], 
+    temps[, year], 
+    threshold = 41, 
+    C = 6, 
+    type="low"
+  )
+  
+  indices[year - 1] <- output
+  first_date <- temps[output, 1]
+  print(first_date)
+}
+
+tmp <- data.frame(indices, c(1996:2014))
+colnames(tmp) <- c('date', 'year')
+png("index_end_summer.png")
+p <- ggplot(tmp, aes(x=year, y=date)) + geom_point() + geom_smooth(method = "lm") 
+plot(p) 
+dev.off()
