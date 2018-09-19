@@ -5,15 +5,15 @@
 smoothing would be appropriate. What data would you need? Would you expect the value of α (the
 first smoothing parameter) to be closer to 0 or 1, and why?
 
-**Answer:** At my job we create performance management applications to monitor 
-specific business lines. One of the business lines we monitor is hospital performance. One major thing we track is the infeciton ration inside the ICU & different wards. The data would be the number and percent of people in the hosiptal that 
-have or got an infection since entering the hospital. It's important to keep 
-this in check and avoid a large outbreak across the hospital. Since infections 
-are mostly easy to identify and are being reported by doctors we generally 
-assume little noise in the data which means we'd try to use a larger alpha 
-closer to 1. In addition, in hospitals nurses are constantly checking in with 
-patients and verifying information. This redundent checking, and importances of 
-subject matter generally leads to low amounts of noise. 
+**Answer:** At my job we create performance management applications to monitor specific business lines. 
+One of the business lines we monitor is hospital performance. One major thing we track is the infection 
+ration inside the ICU & different wards. The data would be the number and percent of people in the 
+hospital that have or got an infection since entering the hospital. It's important to keep this in 
+check and avoid a large outbreak across the hospital. Since infections are mostly easy to identify 
+and are being reported by doctors we generally assume little noise in the data which means we'd try to 
+use a larger alpha closer to 1. In addition, in hospitals nurses are constantly checking in with 
+patients and verifying information. This redundant checking, and importance of subject matter 
+generally leads to low amounts of noise.
 
 # Question 7.2
 **Question:** Using the 20 years of daily high temperature data for Atlanta (July through October) from Question 6.2
@@ -117,7 +117,7 @@ cusum <- function(my_vector, threshold = 100, C = 0, type="high"){
   # threshold, is our threshold
   # C - correction value. 
   
-  # error handeling, input an option?
+  # error handling, input an option?
   if (!(type %in% c("low", "high"))){
     print("type is not low or high")
     stop()
@@ -171,15 +171,16 @@ for (year in 2:20){
 }
 ```
 
-Now plotting these indices agains the year they are from, we can fit a trend line to see if 
+Now plotting these indices against the year they are from, we can fit a trend line to see if 
 the numbers are increasing. If they are, then that would imply summer is ending later each 
 year. 
 
 ![summer_end_dates](./index_end_summer.png)
 
-The trend line appears to be positive! However, this must be taken with a grain of salt. 
-The change is over 20 years, it appears to be less than a week, and there is definitaly 
-a lot of variance, randomness, and/or noise in our results here. The confidence interval 
-of the potential true value of our trend line includes the value it started at, 95, which 
-means it may have not changed over time. I would have to say either our data is inconclusive 
-or that summer is ***not*** ending later and later over time. 
+The trend line appears to be positive! 
+However, this must be taken with a grain of salt. The change is over 20 years, 
+it appears to be less than a week, and there is definitely a lot of variance, randomness, 
+and/or noise in our results here. The confidence interval of the potential true value of our 
+trend line includes the value it started at, 95, which means it may have not changed over time. 
+I would have to say either our data is inconclusive or that summer is ***not*** ending later
+and later over time.
