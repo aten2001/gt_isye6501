@@ -46,21 +46,43 @@ cv.glm(crimes, slim_lm)$delta  # 48661.19
 ## linear model fits the data better now. 
 
 sample <- c(
-                 14.0,
-                 0,
-                 10.0,
-                 12.0,
-                 15.5,
-                 0.640,
-                 94.0,
-                 150,
-                 1.1,
-                 0.120,
-                 3.6,
-                 3200,
-                 20.1,
-                 0.04,
-                 39.0
-               )
+            14.0,
+            0,
+            10.0,
+            12.0,
+            15.5,
+            0.640,
+            94.0,
+            150,
+            1.1,
+            0.120,
+            3.6,
+            3200,
+            20.1,
+            0.04,
+            39.0
+          )
 
-print(predict(my_fit, newdata=sample))
+crimes <- rbind(crimes, sample)
+
+print(
+  paste(
+    "Predicted crimes for sample: ", 
+    predict(my_fit, newdata=crimes[nrow(crimes), ] )  # 115 point something
+  )
+)
+
+PCA_crimes <- prcomp(
+  crimes[c(1:(nrow(crimes)-1)), c(1:(ncol(crimes)-1))], 
+  center = T,
+  scale = T
+)
+
+plot_df <- cbind(PCA_crimes$x[, 1], crimes[-nrow(crimes), ncol(crimes)])
+colnames(plot_df) <- c('pc1', 'crimes')
+
+p <- ggplot(as.data.frame(plot_df), aes(x=pc1, y=crimes)) + geom_point() +
+  geom_smooth(method="lm")
+png("linear_regression.png")
+plot(p)
+dev.off()
