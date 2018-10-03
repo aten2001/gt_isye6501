@@ -33,7 +33,7 @@ crime_pca <- prcomp(
 )
 ```
 Let's check out what our scaling looks like since we'll use these later:
-``R
+```R
 print("scale")
 print( crime_pca$scale )     # scaling used. 
            M           So           Ed          Po1          Po2           LF          M.F 
