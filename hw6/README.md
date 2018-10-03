@@ -161,5 +161,5 @@ is orthogonal to each of the others so we don't need to test any feature selecti
 
 
 ### Helpful Links
-[PCA - I.T. Jolliffe](http://wpage.unina.it/cafiero/books/pc.pdf)
-[Explained Visually](http://setosa.io/ev/principal-component-analysis/)
+  - [PCA - I.T. Jolliffe](http://wpage.unina.it/cafiero/books/pc.pdf)  
+  - [Explained Visually](http://setosa.io/ev/principal-component-analysis/)
