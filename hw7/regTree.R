@@ -1,3 +1,4 @@
+#!/usr/bin/Rscript
 # vim: tw=80 ts=2 sw=2:
 
 # Homework 7 - Advanced Regression
