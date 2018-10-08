@@ -13,8 +13,7 @@ In R, you can use the tree package or the `rpart` package, and the `randomForest
 each model, describe one or two qualitative takeaways you get from analyzing the results (i.e., don’t just
 stop when you have a good model, <em>but interpret it too</em>).  
 
-**Answer:** 
-#### Part 1
+#### Answer - Part 1
 After trying some different parameters I determined that the standard minimum amount of calues in a node to split 
 was twenty. Given our small sample size, this will generate a shallow tree. After using `rpart` we find that there 
 were only three splits created when regressing on our small sample. 
@@ -73,7 +72,7 @@ OLS or other linear models.
 
 ![prediction chart](./prunedTreePredict.png)
 
-Code:
+#### Code:
 ```R
 create_reg_tree <- function(df, mthd='anova', min_split=20, my_cp=0.01 ){
   'Create and run a regression tree (CART)'
@@ -123,7 +122,7 @@ uscrime_df <- read.table(
   header = TRUE
 )
 
-create_reg_tree(df = data, my_cp = 0.005)
+create_reg_tree(df = uscrime_df, my_cp = 0.005)
 
 
 library(ggplot2)
@@ -136,7 +135,7 @@ p <- ggplot(uscrime_df, aes(x = Po1, y = NW)) +
 p  # show plot
 ```
 
-#### Part 2
+#### Answer - Part 2
 
 Under Construction
 
@@ -173,8 +172,7 @@ following features to help them make this predictions:
     identifying a bad customer as good, is 5 times worse than incorrectly classifying a good
     customer as bad. Determine a good threshold probability based on your model.
 
-**Answer:**
-#### Part 1
+#### Answer - Part 1
 Under Construction
-#### Part 2
+#### Answer - Part 2
 Under Construction
