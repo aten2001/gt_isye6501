@@ -72,6 +72,10 @@ OLS or other linear models.
 
 ![prediction chart](./prunedTreePredict.png)
 
+#### Helpful Links 
+  1. [Stat methods - CART](https://www.statmethods.net/advstats/cart.html)
+  2. [R2D3](http://www.r2d3.us/visual-intro-to-machine-learning-part-1/)
+
 #### Code:
 ```R
 create_reg_tree <- function(df, mthd='anova', min_split=20, my_cp=0.01 ){
@@ -137,7 +141,58 @@ p  # show plot
 
 #### Answer - Part 2
 
-Under Construction
+One way to view Creating a random forest is just creating many decision trees to average out the randomness. 
+My thought process for growing trees was to grow 
+10x the number of points we can expect all points will be used
+multiple times while still not wasting time recomputing trees. We expect
+tress to be shallow so we'll most likely have many repeats. Random forest
+models can be computationally expensive and saving time growing trees can
+greatly reduce the number time to compute. That's why I don't use 500 or
+more trees.  In addition, I didn't want to use more than 3-5 features since the tree I built in part 1 only 
+had three features. This is obviously to avoid overfitting the data. We find that we are able to account for 
+just over 42% of the variance. This is much better than just a single tree which explained about 10% of the 
+variance. If we build more than 470 trees, we start to see the error plataeu out. This is because we run out 
+of unique trees we're able to build. Occam's razor tells us to simplify it down to fewer trees and avoid the 
+redundancy. The random forest averages the results of the many trees which are easy to get predictions from 
+after they are built since they are just a lookup. 
+
+#### Helpful Links
+
+  1. [Code Documentation](https://cran.r-project.org/web/packages/randomForest/randomForest.pdf)
+  2. [Data Science Plus](https://datascienceplus.com/random-forests-in-r/)
+  3. [Hastie & Tibshirani](https://www.r-bloggers.com/in-depth-introduction-to-machine-learning-in-15-hours-of-expert-videos/#chapter8treebasedmethodsslideshttpsclassstanfordeduc4xhumanitiessciencestatlearningassettreespdfplaylisthttpswwwyoutubecomplaylistlistpl5da3qgb5ib23tlua8zgvgc8hv8zadgh)
+
+
+
+#### Code:
+```R
+create_rand_forest <- function(data, num_trees=500, m_try=5){
+  require(randomForest)
+  if (class(data) != 'data.frame') {
+    data <- as.data.frame(data)
+  }
+  fit <- randomForest(
+    x = data[, -ncol(data)], 
+    y = data[, ncol(data)], 
+    ntree =  num_trees,
+    mtry = m_try
+  )
+  
+  print(fit)
+  png("myRandomForestError.png")
+  plot(fit)
+  dev.off()
+  
+}
+
+uscrime_df <- read.table(
+  'uscrime.txt',
+  header = TRUE
+)
+
+##  I tried mtry=3, 4, 5 and 4 explained the most variance at 42%.
+create_rand_forest(uscrime_df, 470, 4)  
+```
 
 <h2>Question 10.2</h2>  
 Describe a situation or problem from your job, everyday life, current events, etc., for which a logistic
