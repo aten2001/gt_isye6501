@@ -229,5 +229,176 @@ following features to help them make this predictions:
 
 #### Answer - Part 1
 Under Construction
+
+#!/usr/bin/Rscript
+# vim: tw=80 ts=2 sw=2:
+
+I am using glmnet instead of glm because the lasso regression is built in and a 
+great way to perform model/feature selection to improve accuracy. 
+
+```R
+library(glmnet)
+
+credit <- read.table(
+  'germancredit.txt', 
+  stringsAsFactors = FALSE, 
+  header = TRUE
+)
+
+# Helper function to do one hot encoding
+factor_to_binary <- function(data, col){
+  'assuming the entries in the column are all strings. Not checking this but
+  should in the future if you have more time to come back and add asserts'
+
+  distinct_vals <- unique(data[, col])
+  for (val in distinct_vals) {
+    data[[val]] <- (data[, col] == val) + 0 # make numeric
+  }
+
+  data[, col] <- NULL
+
+  return(data)
+}
+
+# new data let's get a look
+print( head( credit ) )
+
+response_name <- colnames(credit)[ncol(credit)]
+
+# find whichcolumns are factors or strings
+char_cols_check <- lapply(credit, typeof) == 'character'
+char_cols <- colnames(credit)[char_cols_check]
+
+# one hot encode all categorical variables. 
+for (name in char_cols){
+  credit <- factor_to_binary(credit, name)
+}
+
+train_idx <- sample(
+  1:nrow(credit),
+  round(0.8*nrow(credit)),
+  replace=FALSE
+)
+
+# create Response vector and feature matrix
+X = credit[train_idx, setdiff(names(credit), c(response_name))]
+Y = credit[train_idx, response_name]
+
+x_test = credit[-train_idx, setdiff(names(credit), c(response_name))]
+y_test = credit[-train_idx, response_name]
+
+Y <- Y - 1  # (0 & 1) instead of (1 & 2)
+y_test <- y_test - 1
+
+# Glmnet only takes a matrix as input. 
+# this should help performance anyway
+# matrices are smaller (memory) and consistent (one data type)
+X <- as.matrix(X)
+Y <- as.matrix(Y)
+x_test <- as.matrix(x_test)
+y_test <- as.matrix(y_test)
+# 1. create a model
+# using glmnet 
+fit = glmnet(
+  x = X, 
+  y = Y, 
+  family = "binomial",
+  standardize = FALSE  # because we don't want to change the binary columns
+)
+# 2. Check how well the model fits
+print(fit)  
+yhat <- predict(fit, newx = x_test, type = "class", s = 0) # s=0 is reg logit
+misclass_err <- sum(abs(as.numeric(yhat)-y_test))/nrow(y_test)
+cat("\n","Misclassification error of logit fit: ", misclass_err, "\n", sep="")
+```
+Here are the results from the code above:
+```sh
+Call:  glmnet(x = X, y = Y, family = "binomial", standardize = FALSE) 
+
+      Df       %Dev Lambda
+ [1,]  0 -9.500e-15 213.40
+ [2,]  1  3.381e-03 194.40
+ [3,]  1  6.138e-03 177.20
+ [4,]  1  8.395e-03 161.40
+ [5,]  1  1.025e-02 147.10
+ [6,]  1  1.178e-02 134.00
+ [7,]  1  1.304e-02 122.10
+ [8,]  1  1.408e-02 111.30
+ [9,]  1  1.494e-02 101.40
+[10,]  1  1.565e-02  92.38
+[11,]  1  1.624e-02  84.17
+[12,]  1  1.673e-02  76.69
+[13,]  1  1.714e-02  69.88
+[14,]  1  1.748e-02  63.67
+[15,]  1  1.776e-02  58.02
+[16,]  1  1.799e-02  52.86
+[17,]  1  1.819e-02  48.17
+[18,]  1  1.835e-02  43.89
+[19,]  1  1.848e-02  39.99
+[20,]  1  1.859e-02  36.44
+[21,]  1  1.869e-02  33.20
+[22,]  1  1.876e-02  30.25
+[23,]  1  1.883e-02  27.56
+[24,]  1  1.888e-02  25.11
+[25,]  1  1.892e-02  22.88
+[26,]  1  1.896e-02  20.85
+[27,]  1  1.899e-02  19.00
+[28,]  1  1.902e-02  17.31
+[29,]  1  1.904e-02  15.77
+[30,]  1  1.905e-02  14.37
+[31,]  1  1.907e-02  13.09
+[32,]  1  1.908e-02  11.93
+[33,]  1  1.909e-02  10.87
+
+Misclassification error of logit fit: 0.265
+```
+So 26.5% error is the goal to beat, which isn't that good. 
+We can use cross validation to create a better model.
+
+```R
+cvfit = cv.glmnet(
+  x = X, 
+  y = Y, 
+  family = "binomial", 
+  type.measure = "class",  # misclassification error
+  nfolds = 10,
+  standardize = F
+)
+# create an error of the plots
+png('logistic_cv_error.png')
+plot(cvfit)
+dev.off()
+```
+We can see how our error changes in the following graph. It shows lambda for 
+the lasso regression across the bottom, number of non-zero coefficients 
+across the top and the error on the y axis.
+
+![cv error plot for logit](./logistic_cv_error.png)
+
+Let's check out our coefficents for the model with the lowest error
+```R
+coef(cvfit, s = 'lambda.min')
+```
+
+You can see that the cross validation removes most of our variables we added
+by one hot encoding.  
+
+```R
+yhat <- predict(cvfit, newx = x_test, s = "lambda.min", type = "class")
+misclass_err2 <- sum(abs(as.numeric(yhat)-y_test))/nrow(y_test)
+cat("\n","Misclassification error of logit fit: ", misclass_err2, "\n", sep="")
+```
+
+results on the test set are...
+about 26.5% for our original logistic model and our sparsed out model.
+we could try performing more perprocessing on our data to see if it would
+improve results. We don't standardize our matrix but we should standardize
+our continuous variables in the future. 
+
+#### Helpful links:
+
+  1. [Stanford](https://web.stanford.edu/~hastie/glmnet/glmnet_alpha.html#log)
+  2. [ML cheatsheet](https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html)
+
 #### Answer - Part 2
 Under Construction
