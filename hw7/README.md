@@ -396,4 +396,68 @@ not too bad.
   2. [ML cheatsheet](https://ml-cheatsheet.readthedocs.io/en/latest/logistic_regression.html)
 
 #### Answer - Part 2
-Under Construction
+
+```R
+# we want to use the whole set to check our threshold so we can find all of the
+# possible false positives. 
+probabilities <- predict(
+  fit,  
+  newx = rbind(X, x_test), 
+  type = "response", 
+  s = 0
+)
+
+prob_and_ans <- cbind(probabilities, c(Y, y_test))
+
+colnames(prob_and_ans) <- c("prob", "class")
+```
+We coded 0 as good and 1 bad. For each 1 we code as bad it counts as 5 0s we
+counted as a 1. So we want to make a threshold where the number 1s as 0 *5 <=
+0s as 1s. 
+```R
+test_treshold <- function(data, threshold){
+  data[,'pred'] <- (data[, 'prob'] > threshold) +0
+  bln <- data[, 'pred'] != data[, 'class']  # find our error
+  type1_error <- sum(data[bln, 'class'] == 0)
+  type2_error <- sum(data[bln, 'class'] == 1)  # 1's we called 0
+
+  if (type1_error >= (5*type2_error)){
+    #cat("\n", "Type I error: ", type1_error, "\n", sep="")
+    #cat("\n", "Type II error: ", type2_error, "\n", sep="")
+    return(TRUE)
+  } else {
+      return(FALSE)
+    }
+}
+
+prob_and_ans <- as.data.frame(prob_and_ans)
+```
+making sure our Type I error is 5x greater than type II is one this but we
+also want to minimize error overall. to minimize Type I error we'll maximize
+the threshold number while ensuring it is 5x Type II
+
+```R
+threshs_pass_5x_rule <- c()
+for(thresh in seq(0.1, 0.9, 0.02)) {
+  d <- test_treshold (prob_and_ans, thresh)
+  if (d){
+    threshs_pass_5x_rule <- c(threshs_pass_5x_rule, thresh)
+  }
+}
+
+# best threshold is....
+best_thresh <- max(threshs_pass_5x_rule)
+
+cat("\n", "best: ",best_thresh,  "\n")
+```
+
+With this restriciton here are our error numbers: 
+```
+Type I error: 292
+Type II error: 58
+```
+With a threshold of:
+`best:  0.24` 
+this would have our total error at `292+58=350~35%`
+This increases our total error but saves the company money by reducing the
+amount of type II error. 
