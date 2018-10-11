@@ -70,8 +70,7 @@ y_test <- as.matrix(y_test)
 fit = glmnet(
   x = X, 
   y = Y, 
-  family = "binomial",
-  standardize = FALSE  # because we don't want to change the binary columns
+  family = "binomial"
 )
 # 2. Check how well the model fits
 print(fit)  
@@ -86,8 +85,7 @@ cvfit = cv.glmnet(
   y = Y, 
   family = "binomial", 
   type.measure = "class",  # misclassification error
-  nfolds = 10,
-  standardize = F
+  nfolds = 10
 )
 # create an error of the plots
 png('logistic_cv_error.png')
