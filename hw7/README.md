@@ -228,10 +228,6 @@ following features to help them make this predictions:
     customer as bad. Determine a good threshold probability based on your model.
 
 #### Answer - Part 1
-Under Construction
-
-#!/usr/bin/Rscript
-# vim: tw=80 ts=2 sw=2:
 
 I am using glmnet instead of glm because the lasso regression is built in and a 
 great way to perform model/feature selection to improve accuracy. 
@@ -302,8 +298,7 @@ y_test <- as.matrix(y_test)
 fit = glmnet(
   x = X, 
   y = Y, 
-  family = "binomial",
-  standardize = FALSE  # because we don't want to change the binary columns
+  family = "binomial"
 )
 # 2. Check how well the model fits
 print(fit)  
@@ -361,8 +356,7 @@ cvfit = cv.glmnet(
   y = Y, 
   family = "binomial", 
   type.measure = "class",  # misclassification error
-  nfolds = 10,
-  standardize = F
+  nfolds = 10
 )
 # create an error of the plots
 png('logistic_cv_error.png')
@@ -392,8 +386,9 @@ cat("\n","Misclassification error of logit fit: ", misclass_err2, "\n", sep="")
 results on the test set are...
 about 26.5% for our original logistic model and our sparsed out model.
 we could try performing more perprocessing on our data to see if it would
-improve results. We don't standardize our matrix but we should standardize
-our continuous variables in the future. 
+improve results. We shouuld also, most likely standardize our new x values when we 
+go to predict on them. This may help us increase accuracy as well. However, 75% is 
+not too bad.
 
 #### Helpful links:
 
