@@ -6,10 +6,12 @@ using:
   1. Stepwise regression
   2. Lasso
   3. Elastic net  
+
 For Parts 2 and 3, remember to scale the data first – otherwise, the regression coefficients will be on
 different scales and the constraint won’t have the desired effect.
 For Parts 2 and 3, use the glmnet function in R.
 Notes on R:  
+
   - For the elastic net model, what we called λ in the videos, glmnet calls "alpha"; you can get a
 range of results by varying alpha from 1 (lasso) to 0 (ridge regression) [and, of course, other
 values of alpha in between].  
