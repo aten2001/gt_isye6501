@@ -10,6 +10,8 @@
 
 library(glmnet)
 
+set.seed(42)
+
 crime <- read.table(
   '../data/uscrime.txt',
   header = TRUE
