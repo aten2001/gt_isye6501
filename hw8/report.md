@@ -197,6 +197,83 @@ the same week as our midterm quiz I could have spent more time on this and
 probably gone back through this and probably re ran everything with a train and
 test sets. Alas, one will never know. 
 
+### Code
+```R
+X <- as.matrix(crime[, -ncol(crime)])
+y <- as.vector(crime[, ncol(crime)])
+
+cv_lasso_fit <- cv.glmnet(
+  x = X,
+  y = y,
+  family = "gaussian",
+  alpha = 1,  # Lasso
+  nlambda = 150,  # 50% more checks than normal
+  nfolds = 5,
+  type.measure = "mse"
+)
+
+print("Lasso Coefficients:")
+print("Min Error")
+coef(cv_lasso_fit, s = "lambda.min")
+print("Lambda with error 1 SE above")
+coef(cv_lasso_fit, s = "lambda.1se")
+
+lasso_fit <- glmnet(
+  x = X,
+  y = y,
+  family = "gaussian",
+  alpha = 1,  # Lasso
+  nlambda = 150  # 50% more checks than normal
+)
+
+opt_lasso_fit <- glmnet(
+  x = X,
+  y = y,
+  family = "gaussian",
+  alpha = 1,  # Lasso
+  lambda = cv_lasso_fit$lambda.1se
+)
+
+cat(
+  "\n",
+  "Lasso Dev ratio:",
+  "\n",
+  opt_lasso_fit$dev.ratio,
+  "\n",
+  sep=""
+)
+
+cv_fit <- cv.glmnet(
+  x = X,
+  y = y,
+  family = "gaussian",
+  alpha = 0.5,  # Lasso
+  nlambda = 750,  # 50% more checks than normal
+  nfolds = 5,
+  type.measure = "mse"
+)
+
+net_fit <- glmnet(
+  x = X,
+  y = y,
+  family = "gaussian",
+  alpha = 0.5,  # Lasso
+  lambda = cv_fit$lambda.1se  # 1se instead of min to get a more sparse result
+)
+
+print("Elastic Net coefficients:")
+coef(cv_fit, s = "lambda.1se")
+
+# closer to 0 is better
+cat(
+  "\n",
+  "Elastic Net Dev ratio:",
+  "\n",
+  net_fit$dev.ratio,
+  "\n",
+  sep=""
+)
+```
 
 ## Helpful Links
 
