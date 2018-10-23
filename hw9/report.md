@@ -2,6 +2,18 @@
 ## Question 12.1
 Describe a situation or problem from your job, everyday life, current events, etc., for which a design of
 experiments approach would be appropriate.
+### Answer
+In the field of marketing, A/B testing and DOE are very important. Often, you create an experiment to test which 
+type of marketing plan will drive the most sales. You generally start a few months early, and create a random sample 
+of potential customers and divied them into two groups. You then track to see whom in the groups purchase over the 
+next one to two months and match those whom purchased something from your website against who you marketed to. 
+You can then have a head to head winner. This can be repeated a few times or iterated over a year to try and find 
+the best marketing schema for your product. That way you know when you deploy to the entire market, you have the 
+highest, or at least a better idea, of your return on investment. The investment being the money you spend on 
+the advertisments or whatever you deem best. It's very important to perform a solid DOE when doing this so your 
+company doesn't spend large swaths of money on an inferior campain. The amount of complexity and factors included 
+can vary wildly from product to product and company to company. 
+
 ## Question 12.2
 To determine the value of 10 different yes/no features to the market value of a house (large yard, solar
 roof, etc.), a real estate agent plans to survey 50 potential buyers, showing a fictitious house with
