@@ -1,3 +1,4 @@
+vim: tw=90:
 # Homework 9 - DOE & Probability
 ## Question 12.1
 Describe a situation or problem from your job, everyday life, current events, etc., for which a design of
@@ -14,6 +15,18 @@ the advertisments or whatever you deem best. It's very important to perform a so
 company doesn't spend large swaths of money on an inferior campain. The amount of complexity and factors included 
 can vary wildly from product to product and company to company. 
 
+    I just saw this is one of the examples used in the video. You may need DOE 
+to help you pick the best stategy for a game you are trying to learn. Let's say you make
+a bet with your friend Steve. You and Steve have been friends since childhood and you are
+always competing with each other. He has been bragging about how good he is at the board
+game Monopoly and you intend to teach him a lesson. Thus, leading up to D-Day you set up a
+DOE to figure out the best way to win the game. You can test which color to go for, should
+you make trades on certain properties, does the strategy change when there are four
+players instead of two. You can even apply A/B test comparing the results of owning a
+single color property for a whole game over another to compare the advantages of each. Of
+course, Monopoly takes 87 hours per game and thus, this cannot actually be tested since it
+would take more than a single persons life time to find the true solution. 
+
 ## Question 12.2
 To determine the value of 10 different yes/no features to the market value of a house (large yard, solar
 roof, etc.), a real estate agent plans to survey 50 potential buyers, showing a fictitious house with
@@ -24,11 +37,18 @@ experiment: what set of features should each of the 16 fictitious houses have? N
 ## Question 13.1
 For each of the following distributions, give an example of data that you would expect to follow this
 distribution (besides the examples already discussed in class).
-  -  Binomial  
-  -  Geometric  
-  -  Poisson  
-  -  Exponential  
-  -  Weibull  
+  -  Binomial - rolling an odd number on a die. Each roll is independent.
+     'p=0.5' & `q=(1-p)=0.5`
+  -  Geometric - Probability of winning the lottery `x` times. Hope you like small numbers 
+  -  Poisson - The number of people to vote in an election. Definitely a non-negative
+     whole number. Cannot be 1/2 a person and cannot have negative people. You can _kind_
+     of assume independence
+  -  Exponential - following the above, the distribution of people arriving to vote. 
+  -  Weibull - failure rates over time huh... hmm dates of when someone will or the next drop out of
+     gradschool. You'd expect k<1 because you would assume those not made out for grade
+     school or those who are not enthusastic about the program will drop out early and
+     then those who have put in a lot more time and are better at school will make it
+     through.  
 ## Question 13.2
 In this problem you, can simulate a simplified airport security system at a busy airport. Passengers arrive
 according to a Poisson distribution with λ<sub>1</sub> = 5 per minute (i.e., mean interarrival rate μ<sub>1</sub> = 0.2 minutes)
