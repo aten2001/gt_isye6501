@@ -13,12 +13,12 @@ PRNG = np.random.RandomState()
 PRNG.seed(1738)  # squaw
 
 env = simpy.Environment()
-self_serv = simpy.Resource(env, capacity=2)
-serv_ppl = simpy.Resource(env, capacity=1)
-
+self_serv = simpy.Resource(env, capacity=8)
+serv_ppl = simpy.Resource(env, capacity=6)
 wait_times = []
+
 def checkin_boi(env, resource1, resource2, arrival_time, wait_times):
-    # Simulate driving to the BCS
+    # arriving at the air port
     yield env.timeout(arrival_time)
     t1 = env.now
 
@@ -54,7 +54,8 @@ people_checking_in = range(750)
 arrival_time = 0.0
 for each_person in people_checking_in:
     env.process(checkin_boi(env, self_serv, serv_ppl, arrival_time, wait_times))
-    arrival_time += PRNG.exponential(scale=0.2)  # 5 per minute
+    arrival_time += PRNG.exponential(scale=1./50)
+    # arrival_time += PRNG.exponential(scale=0.2)  # 5 per minute
 
 env.run()
 print("mean wait time: ", round(np.mean(wait_times)))

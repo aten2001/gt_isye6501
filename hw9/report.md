@@ -76,6 +76,9 @@ number starts to blow up, and if we have a 1-2 split in either direction we end 
 about a 25-30 minute wait time. However, when I change to have 2 of each the average wait
 time for 750 flowing into the process is 6 minutes. 
 
+If we increase the flow to 50 per minute then we're we can increase the number of self
+service machines to 8 and have at least 6 check in people.
+
 
 
 ```python
@@ -88,10 +91,10 @@ PRNG.seed(1738)  # squaw
 env = simpy.Environment()
 self_serv = simpy.Resource(env, capacity=2)
 serv_ppl = simpy.Resource(env, capacity=1)
-
 wait_times = []
+
 def checkin_boi(env, resource1, resource2, arrival_time, wait_times):
-    # Simulate driving to the BCS
+    # arive at the airport 
     yield env.timeout(arrival_time)
     t1 = env.now
 
