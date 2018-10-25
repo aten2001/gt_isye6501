@@ -38,14 +38,14 @@ experiment: what set of features should each of the 16 fictitious houses have? N
 For each of the following distributions, give an example of data that you would expect to follow this
 distribution (besides the examples already discussed in class).
   -  Binomial - rolling an odd number on a die. Each roll is independent.
-     'p=0.5' & `q=(1-p)=0.5`
+     `p=0.5` & `q=(1-p)=0.5`
   -  Geometric - Probability of winning the lottery `x` times. Hope you like small numbers 
   -  Poisson - The number of people to vote in an election. Definitely a non-negative
      whole number. Cannot be 1/2 a person and cannot have negative people. You can _kind_
      of assume independence
   -  Exponential - following the above, the distribution of people arriving to vote. 
   -  Weibull - failure rates over time huh... hmm dates of when someone will or the next drop out of
-     gradschool. You'd expect k<1 because you would assume those not made out for grade
+     gradschool. You'd expect `k<1` because you would assume those not made out for grade
      school or those who are not enthusastic about the program will drop out early and
      then those who have put in a lot more time and are better at school will make it
      through.  
@@ -61,3 +61,7 @@ Use the Arena software (PC users) or Python with SimPy (PC or Mac users) to buil
 system, and then vary the number of ID/boarding-pass checkers and personal-check queues to
 determine how many are needed to keep average wait times below 15 minutes. [If you’re using SimPy,
 or if you have access to a non-student version of Arena, you can use λ<sub>1</sub> = 50 to simulate a busier airport.]
+
+
+The question is basically: How many checkers and personal-checkers are needed to keep an
+average wait time below 15 minutes? x checkers and y personal-checkers
