@@ -15,7 +15,7 @@ the advertisments or whatever you deem best. It's very important to perform a so
 company doesn't spend large swaths of money on an inferior campain. The amount of complexity and factors included 
 can vary wildly from product to product and company to company. 
 
-    I just saw this is one of the examples used in the video. You may need DOE 
+_I just saw this is one of the examples used in the video. You may need DOE_ 
 to help you pick the best stategy for a game you are trying to learn. Let's say you make
 a bet with your friend Steve. You and Steve have been friends since childhood and you are
 always competing with each other. He has been bragging about how good he is at the board
@@ -34,6 +34,30 @@ different combinations of features. To reduce the survey size, the agent wants t
 houses. Use R’s `FrF2` function (in the `FrF2` package) to find a fractional factorial design for this
 experiment: what set of features should each of the 16 fictitious houses have? Note: the output of
 `FrF2` is "1" (include) or "-1" (don’t include) for each feature.
+
+### Answer
+
+Trial|large.yard|solar.roof|basement|two.floor|well.water|public.sewage|built.after.1950|waterfront|Has.HSA.costs|within.an.hour.of.airport
+|-----|---------|---------|--------|--------|---------|------------|--------------|----------|-----------|---------------------|
+| 1|or nah|or nah|Include|Include|or nah|Include|Include|Include|or nah|or nah|
+| 2|Include|or nah|Include|or nah|Include|or nah|Include|Include|Include|or nah|
+| 3|Include|or nah|or nah|Include|Include|Include|or nah|or nah|Include|or nah|
+| 4|or nah|Include|Include|Include|Include|Include|or nah|Include|Include|Include|
+| 5|Include|Include|or nah|or nah|or nah|Include|Include|Include|Include|or nah|
+| 6|or nah|or nah|or nah|or nah|or nah|or nah|or nah|or nah|or nah|or nah|
+| 7|or nah|or nah|or nah|Include|or nah|or nah|or nah|Include|Include|Include|
+| 8|Include|Include|Include|or nah|or nah|or nah|or nah|Include|or nah|Include|
+| 9|or nah|or nah|Include|or nah|or nah|Include|Include|or nah|Include|Include|
+|10|or nah|Include|or nah|Include|Include|or nah|Include|Include|or nah|or nah|
+|11|Include|Include|Include|Include|or nah|or nah|or nah|or nah|Include|or nah|
+|12|or nah|Include|or nah|or nah|Include|or nah|Include|or nah|Include|Include|
+|13|Include|or nah|Include|Include|Include|or nah|Include|or nah|or nah|Include|
+|14|or nah|Include|Include|or nah|Include|Include|or nah|or nah|or nah|or nah|
+|15|Include|or nah|or nah|or nah|Include|Include|or nah|Include|or nah|Include|
+|16|Include|Include|or nah|Include|or nah|Include|Include|or nah|or nah|Include|
+
+
+
 ## Question 13.1
 For each of the following distributions, give an example of data that you would expect to follow this
 distribution (besides the examples already discussed in class).
