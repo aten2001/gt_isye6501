@@ -2,7 +2,7 @@
 ## Question 14.1
 The breast cancer data set breast-cancer-wisconsin.data.txt from
 [UC Irvine](http://archive.ics.uci.edu/ml/machine-learning-databases/breast-cancer-wisconsin/)
-([description](http://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Original%29) has missing values.
+([description](http://archive.ics.uci.edu/ml/datasets/Breast+Cancer+Wisconsin+%28Original%29) ) has missing values.
 
 <ol>
     <li>Use the mean/mode imputation method to impute values for the missing data.</li>
@@ -15,6 +15,8 @@ The breast cancer data set breast-cancer-wisconsin.data.txt from
         <li>the data set when a binary variable is introduced to indicate missing values.</li>
     </ol>
 </ol>
+
+### Answer
 
 ## Question 15.1
 Describe a situation or problem from your job, everyday life, current events, etc., for which optimization
