@@ -47,52 +47,54 @@ data_set[, 11] <- NULL
 # 1. use mean/mode to impute missing values
 ## because we are dealing with numeric numbers we'll use the Mean to impute the
 ## missing data instead of the mode which is reserved for categorical data. 
-data_set[bln, 6] <- NA
-data_set <- sapply(data_set, as.numeric)
-mu <- mean(data_set[, 6], na.rm = TRUE)
+df1 <- data_set
+df1[bln, 6] <- NA
+df1 <- sapply(df1, as.numeric)
+mu <- mean(df1[, 6], na.rm = TRUE)
 cat("mu: ", mu)
-data_set[bln, 6] <- mu
-print(data_set[bln, ])
+df1[bln, 6] <- mu
+print(df1[bln, ])
 
 # 2. use regression to impute missing values
 # split data up and remove records we will impute
-tmp_y <- as.vector(data_set[!bln, 6])
-X <- as.matrix(data_set[!bln, -6])
+df2 <- data_set
+df2[bln, 6] <- NA
+df2 <- sapply(df2, as.numeric)
+X <- df2[!bln, ]
 X <- X - colMeans(X)  # center the data
 
-cv_glm <- function(x,y, n = 10){
+cv_glm <- function(x, n = 10){
   n_records <- round(nrow(x)/n)
+  cat(n_records, ' Used in CV test set', '\n')
   eps <- c()
   for (i in 1:n){
     start = (i-1)*n_records + 1
     end = i*n_records
     if (end > nrow(x) ){
       x_test <- x[c(start:nrow(x)), ]
-      y_test <- x[c(start:nrow(y)), ]
       x_train <- x[-c(start:nrow(x)), ]
-      y_train <- x[-c(start:nrow(y)), ]
 
     } else {
       x_test <- x[c(start:end), ]
-      y_test <- x[c(start:end), ]
       x_train <- x[-c(start:end), ]
-      y_train <- x[-c(start:end), ]
     }
-    model <- glm.fit(
-      x = x_train,
-      y = y_train, 
-      family = gaussian()
-    )
-    y_hat <- predict(model, newdata = x_test)
-    mse <- sum(abs(y_hat-y_test))
-    eps[i] <- mse
+    m <- glm(V7 ~., data = as.data.frame(x_train) )
+    y_hat <- stats::predict(object = m, newdata=as.data.frame(x_test[, -6]))
+    mse <- sum(abs(y_hat-x_test[, 6]))
+    eps <- c(eps, mse)
   }
   return(eps)
 }
+cv_err <- cv_glm(x = X, n = 10)  # MSE is 115 which seems... good.
+cat("Avg. Cross-Validation Error (MSE): ", mean(cv_err), '\n','\n')
 
-cv_err <- cv_glm(x = X, y = tmp_y)
+# impute missing values
+full_model <- glm(V7 ~ ., data = as.data.frame(X) )
+df2[bln, 6] <-  predict(
+  full_model,
+  newdata=as.data.frame(df2[bln, -6] - colMeans(X[, -6]) )
+)
 
-print(cv_err)
 # 3. use regression with perturbation to impute missing values
 
 # 4. (Optional) Compare the results of classification models of the previous
