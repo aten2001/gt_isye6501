@@ -1,7 +1,7 @@
 # Homework 11 - Optimization
 ## Question 15.2
 In the videos, we saw the "diet problem". (The diet problem is one of the first large-scale optimization
-problems to be studied in practice. Back in the 1930’s and 40’s, the Army wanted to meet the nutritional
+problems to be studied in practice. Back in the 1930's and 40's, the Army wanted to meet the nutritional
 requirements of its soldiers while minimizing the cost.) In this homework you get to solve a diet problem
 with real data. The data is given in the file `diet.xls`.
   
@@ -22,7 +22,7 @@ meat?), just call it whatever you think is appropriate – I want you to learn h
 type of constraint, but I don’t really care whether we agree on how to classify foods!]
 
 If you want to see what a more full-sized problem would look like, try solving your models for the file
-diet_large.xls, which is a low-cholesterol diet model (rather than minimizing cost, the goal is to
+diet\_large.xls, which is a low-cholesterol diet model (rather than minimizing cost, the goal is to
 minimize cholesterol intake). I don’t know anyone who’d want to eat this diet – the optimal solution
 includes dried chrysanthemum garland, raw beluga whale flipper, freeze-dried parsley, etc. – which
 shows why it’s necessary to add additional constraints beyond the basic ones we saw in the video!
