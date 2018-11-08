@@ -40,13 +40,27 @@ import pandas as pd
 df = pd.read_excel('../data/diet.xls', sheet_name=0)
 requirments = pd.read_excel('../data/diet.xls', sheet_name=1)
 
-# Head of data
-                 Foods  Price/ Serving      Serving Size  Calories  Cholesterol mg  Total_Fat g  Sodium mg  Carbohydrates g  Dietary_Fiber g  Protein g  Vit_A IU  Vit_C IU  Calcium mg  Iron mg
-0      Frozen Broccoli            0.16         10 Oz Pkg      73.8             0.0          0.8       68.2             13.6              8.5        8.0    5867.4     160.2       159.0      2.3
-1          Carrots,Raw            0.07  1/2 Cup Shredded      23.7             0.0          0.1       19.2              5.6              1.6        0.6   15471.0       5.1        14.9      0.3
-2          Celery, Raw            0.04           1 Stalk       6.4             0.0          0.1       34.8              1.5              0.7        0.3      53.6       2.8        16.0      0.2
-3          Frozen Corn            0.18           1/2 Cup      72.2             0.0          0.6        2.5             17.1              2.0        2.5     106.6       5.2         3.3      0.3
-4  Lettuce,Iceberg,Raw            0.02            1 Leaf       2.6             0.0          0.0        1.8              0.4              0.3        0.2      66.0       0.8         3.8      0.1
+## Head of data
+                 Foods  Price/ Serving      Serving Size  Calories  Cholesterol mg  
+0      Frozen Broccoli            0.16         10 Oz Pkg      73.8             0.0  
+1          Carrots,Raw            0.07  1/2 Cup Shredded      23.7             0.0  
+2          Celery, Raw            0.04           1 Stalk       6.4             0.0  
+3          Frozen Corn            0.18           1/2 Cup      72.2             0.0  
+4  Lettuce,Iceberg,Raw            0.02            1 Leaf       2.6             0.0  
+
+   Total_Fat g  Sodium mg  Carbohydrates g  Dietary_Fiber g  Protein g  Vit_A IU  
+0          0.8       68.2             13.6              8.5        8.0    5867.4  
+1          0.1       19.2              5.6              1.6        0.6   15471.0  
+2          0.1       34.8              1.5              0.7        0.3      53.6  
+3          0.6        2.5             17.1              2.0        2.5     106.6  
+4          0.0        1.8              0.4              0.3        0.2      66.0  
+
+    Vit_C IU  Calcium mg  Iron mg
+0      160.2       159.0      2.3
+1        5.1        14.9      0.3
+2        2.8        16.0      0.2
+3        5.2         3.3      0.3
+4        0.8         3.8      0.1
 
 # Requirements - min/max
 #          Col1 Col2 Col3 Col4 Col5 Col6 Col7  Col8 Col9 Col10 Col11
