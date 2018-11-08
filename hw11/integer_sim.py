@@ -37,9 +37,6 @@ food_properties = [{food_name:val for food_name,val in zip(food_items,
     df.loc[:, col])} for col in prop_names]
 
 # Objective function
-#prob += pulp.lpSum([food_price[food]*food_amount[food]
-#    for food in food_items]+ [food_selected[food] 
-#        for food in food_items]), 'Total cost of diet'
 prob += pulp.lpSum([food_price[food]*food_amount[food]
     for food in food_items]), 'Total cost of diet'
 

@@ -26,10 +26,6 @@ prob = pulp.LpProblem("The Army Diet Problem", pulp.LpMinimize)
 # Variables: LpVariable("name", lower_bound, upper_bound, discrete | continuous)
 # options LpContinuous or LpInteger
 
-##############################    PART 1    ################################### 
-## note to self, part 1 can be rewritten to just to the pandas dataframe. No
-## need to dictionaries when you can index with .loc[]
-
 # get list of properties each food item has
 prop_names =  list(df.iloc[:, 3:].columns)
 # create a dictionary of varibles, basically each food item
