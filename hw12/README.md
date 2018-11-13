@@ -70,8 +70,21 @@ someones power off erroneously.
   - **to:** create estimates on the potential cost of not turning off a customers power and produce a priority ranking for
     each customer
 
-Basically time the probability by the percent likely they are repay which give a _risk factor_ and then use use a
-regression at the end of a tree to project future costs.
+Now that we have probabilities for each customer to pay back the power company, we have to make a choice. Our first
+option is to set a single cutoff and only prioritize those we classify as not going to pay back the company. Then,
+create a regression model to predict the amount of money each customer that is expected to not pay would owe. 
+
+The second options is to set multiple cutoffs to create different levels of confidence. For example, we could have three 
+sections where each customer will be assigned a weight of 0.33, 0.67 or 1 depending on which section they fall in. Then
+for each of the three sections you can predict how much they are likely to owe the company by creating three distinct 
+regression models. Potentially more scientific would be to use software to create a decision tree on the logistic model
+output along with the other data collected and create a regression model at each node or leaf. For the leaves that
+corespond with customers of a lower confidence level we would add a penalty or subtract away expected money owed to
+emphesize this point. This may happen already with some of the predictions come through as 0 since they are likely to
+pay back the company, it's hard to tell without actually creatng the models.  A single decision tree is
+still easily explainable to a general listener, however depending on the sample size we may end up overfitting the data.
+We have now cut the data down many times, and not many people default in the first place. One would have to check at
+this point using a test and validation set or cross-validation to make sure. 
 #### Step 3
   - **Given:** Projected costs and locations of customers 
   - use Density Based Clustering (DBSCAN)
@@ -79,6 +92,10 @@ regression at the end of a tree to project future costs.
   the most money at once. 
 
 _May be illegal to cluster on location because it can be linked to ethnicity and religion._
+
+If you know where everyone lives, then you could use a density based clustering algorithm like DBSCAN or OPTICS
+algorithm to create clusters and then sum up the amount of money owed by the entire cluster. Then the power company
+would be able to target the largest clusters in order to optimize their returns.
 
 #### Alternative
   - Given the amount owed by customer and the mean/estimated drive time to each other customer
