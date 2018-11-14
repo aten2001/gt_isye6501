@@ -1,4 +1,3 @@
-// vim: tw=120:
 # Homework 12
 ## Question 18.1
 Describe analytics models and data that could be used to make good recommendations to the power 
@@ -28,35 +27,35 @@ use the {given, use, to} format to guide the discussions: Given {data}, use {mod
     - Number of continuous months unpaid - count data, Poisson or Negative Binomial. Expect most to be 1.
     - Amount owed - Positive number, you'd expect someone to be extremely in the hole to be most likely to not be able to repay.
     - Has the customer contacted the power company about the late/missing payment - binary yes/no
-    - I beleive power companies look at your credit report or can so they may be able to glean the **following:**
+    - I believe power companies look at your credit report or can so they may be able to glean the **following:**
       - Estimated income
       - estimated rent or mortgage payment
       - amount of total debt owed
       - have they been sent to collections by someone else previously
     - Clustering results (from KNN or DBSCAN as input for logistic regression input)
-  - **use:**Logistic Regression Model(s), a clustering algorithm to feed one of the logistic models
+  - **use:** Logistic Regression Model(s), a clustering algorithm to feed one of the logistic models
   - **to:** To create different confidence intervals likely hood to pay back the power company, and one to determine if its
     possible for a customer to pay back the power company. Remember, we only want to turn the power off if they have the
     ability to the power company but choose not too. 
 
-Our dataset we'll be analyzing is the collectoin of customers that currently
+Our dataset we'll be analyzing is the collection of customers that currently
 owe the power company money regardless if this is their first missed bill or
-their hundreth. Because we want to avoid as many false positives (turning power
+their hundredth. Because we want to avoid as many false positives (turning power
 off on those who were going to pay the company back), we want to use a model
 where we are able to easily move our cutoff point to allow for more Type I error
 so we can further reduce our Type II error. These models include, Support Vector Machines (SVMs), Logistic Regression,
-and Quadradic Discriminant Analysis (QDA). We will not use QDA since it assumes the predictor matrix, _X_, is drawn from
-a Normal Distribution while we are likely to have categorical or poisson distributed features. SVMs are very cool and
+and Quadratic Discriminant Analysis (QDA). We will not use QDA since it assumes the predictor matrix, _X_, is drawn from
+a Normal Distribution while we are likely to have categorical or Poisson distributed features. SVMs are very cool and
 generally good models when we have a large data set but can be hard to explain to the general public. Mapping a data set
-into higher dimensional feature space allowes the SVM to draw a line in the gaps between groups, but is hard for people
-to invision. SVM are, generally,  non-probabalistic models which prevent us from drawing different confidence lines. I
+into higher dimensional feature space allows the SVM to draw a line in the gaps between groups, but is hard for people
+to envision. SVM are, generally,  non-probabilistic models which prevent us from drawing different confidence lines. I
 wish to have different levels of confidence to help us set our priority list determining which customers should have
-their power turned off first. I am not considering Descision Trees since they are imfamous for overfitting and I'm
+their power turned off first. I am not considering Decision Trees since they are infamous for overfitting and I'm
 avoiding using a Random Forest because it doesn't give me the control over the types of error as I would like (i.e. I
 cannot focus on minimizing type II error as easily).  This leaves Logistic Regression as our main model to create
 probabilities of who is likely to pay back the company next month. Before running this model, we should first use the
 data collected to produce a model that suggests whether the customer is able to pay back the power company. We should
-tend to use a higher cutoff point as there will be some subjectivity used here. Aggragating all of the information above
+tend to use a higher cutoff point as there will be some subjectivity used here. Aggregating all of the information above
 and making estimates of bills, debts, income and using a clustering method like KNN or DBSCAN to cluster people (dangerous to do this
 read [Weapons of Math Destruction](https://www.amazon.com/Weapons-Math-Destruction-Increases-Inequality/dp/0553418815)
 ) to see if people appear as though they are able to pay back the company. Once we have an estimate on whether or not
@@ -79,16 +78,16 @@ sections where each customer will be assigned a weight of 0.33, 0.67 or 1 depend
 for each of the three sections you can predict how much they are likely to owe the company by creating three distinct 
 regression models. Potentially more scientific would be to use software to create a decision tree on the logistic model
 output along with the other data collected and create a regression model at each node or leaf. For the leaves that
-corespond with customers of a lower confidence level we would add a penalty or subtract away expected money owed to
-emphesize this point. This may happen already with some of the predictions come through as 0 since they are likely to
-pay back the company, it's hard to tell without actually creatng the models.  A single decision tree is
+correspond with customers of a lower confidence level we would add a penalty or subtract away expected money owed to
+emphasize this point. This may happen already with some of the predictions come through as 0 since they are likely to
+pay back the company, it's hard to tell without actually creating the models.  A single decision tree is
 still easily explainable to a general listener, however depending on the sample size we may end up overfitting the data.
 We have now cut the data down many times, and not many people default in the first place. One would have to check at
 this point using a test and validation set or cross-validation to make sure. 
 #### Step 3
   - **Given:** Projected costs and locations of customers 
-  - use Density Based Clustering (DBSCAN)
-  - to identify areas or clusters that can be shut down together or by a single employee  to save the company 
+  - **use:** Density Based Clustering (DBSCAN)
+  - **to:** identify areas or clusters that can be shut down together or by a single employee  to save the company 
   the most money at once. 
 
 _May be illegal to cluster on location because it can be linked to ethnicity and religion._
@@ -98,12 +97,28 @@ algorithm to create clusters and then sum up the amount of money owed by the ent
 would be able to target the largest clusters in order to optimize their returns.
 
 #### Alternative
-  - Given the amount owed by customer and the mean/estimated drive time to each other customer
-  - Use Network/Graph Optimization problem (considered easily solvable like linear optimizatoin)
-  - **to:** determine which groups of customers can be reached in the month that will maximize the estimated savings to the
+  - **Given:** The amount owed by customer and the mean/estimated drive time to each other customer
+  - **Use:** Network/Graph Optimization problem (considered easily solvable like linear optimization)
+  - **to:** Determine which groups of customers can be reached in the month that will maximize the estimated savings to the
     power company. 
 
+Although it's illegal to use address when computing this priority list, the power company does have the address of all
+their customers. They can create a large network database where each node is a customer and each edge is the distance or
+estimated time to each other customer. Although this database would be large, like most networks, they are relatively 
+easy to solve using optimization. To create estimated times from one node to another, one could create the estimates
+themselves or look for an online program/API. I'm sure Google Maps has some API where you could quickly create these.
+Then, you are simply optimizing over a graph. 
+
+This may still be illegal, in which case, you'll have to just wing it.
+You'll have to just create a prioritization with probability of paying the company back and amount owed and just hit
+them in order.  
 #### Step 4
   - **Given:** The above models, probability distributions,  and data
   - **use:** Simulation
   - **to:** test our hypothesis against real life data to ensure accurate decision making. 
+
+Since creating models is an art and not a science, it is best to check our ideas with simulations and then see how they
+compare with real life data. This should help us create an optimization model to minimize the false positive rate while
+maximizing profits/turn offs for the company. A simulation is one of the best ways to vet that we are on the right track
+and have created a useful model. As the old saying goes "[all models are
+wrong](https://en.wikipedia.org/wiki/All_models_are_wrong), some models are useful".
