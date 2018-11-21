@@ -36,10 +36,10 @@ problem.
 The Objective Function:
 Maximize Profit (Items sold multiplied by their price)
 
-Potential constriants (but not limited too):
+Potential constraints (but not limited too):
   - Square footage of total shelf space
   - minimal amount of shelf space per item
-  - maxmimum distance between two items
+  - maximum distance between two items
   - One item has proportional shelf space as another, e.g.If item A has X
     shelf space, Item B has 1.5*X shelf space. 
   - Only X or Y can be on the shelf. E.g. choose Coke or Pepsi
@@ -52,7 +52,7 @@ The constraints will have to be adjusted depending on different analysis. We
 could also try to use a correlation matrix to see if any items are related. We
 could also use the previous months where we have the data for which products
 where on the shelves and how much space they were given. You could then use
-ridge regession to help determine the importance of individual items/products.
+ridge regression to help determine the importance of individual items/products.
 Ridge regression will leave larger coefficients on the features that explain the
 most variance in the response, profit that month.
 
@@ -62,18 +62,38 @@ two variables if they are highly correlated. In our case, this may be bad. We
 would want to sell items together if they are correlated to increase sales and
 then profit. Thus, this is a bad idea in our model. 
 
-Instead, we'll want to take an A/B testing or multi arm bandet approach to
+Instead, we'll want to take an A/B testing or multi arm bandit approach to
 stocking our shelves. We could update the shelf space at the end of each week or
-month depending on how often the store recieves shipments to test product groups
+month depending on how often the store receives shipments to test product groups
 head to head. This will allow us to convert customers as we go and gain
-information to add to our optimization problem and to our similuation we will
-build. 
+information to add to our optimization problem and to our simulation we will
+build. Like Dr. Sokol said in the videos, we'll want to tie in basic Hypothesis
+testing to make sure our correlations and A/B tests have statistically
+significant results. We want to check that if product X and Y are correlated then
+their sales are proportional, if we have to correlated items closer together
+their sales increase, or many other possibilities.
 
 Like many optimization and real life problems, creating a simulation is an
-excellant idea. This allows us to test many possibilities concurently with the
+excellent idea. This allows us to test many possibilities concurrently with the
 real world to see if our optimization problem will meet customer demand and
 patters. We also create a feedback loop where we can use optimization to feed
 our real life shelving problem, which we'll use to check the results of our
 simulation which will test the results of our optimization problem. This will
 allow us to quickly iterate to a true optimal solution since we are bound to
 start the problem missing information. 
+
+How do we know our results are accurate or that our decision will actually drive
+more sales? Unfortunately there is no single answer. As I just mentioned, we will 
+have to iterate to find the best solution. However, that does not mean we are 
+shooting into the dark. We can assume that each aisle or place on the shelf
+does not have equal value. Spots near the entrance or register are more likely
+to be seen, as well as spots next to the retailers most popular items. For a
+grocery store this is spots near the eggs and milk. We could sent up tests that
+would place different items in prime spots across stores and compare stores in
+areas of similar demographics head to head. This goes back to the A/B testing
+mentioned before. Some stores ask customers to fill out surveys online for a
+chance to be entered into a lottery. We could use this surveys to ask a multitude
+of questions relating to their experience in the store and what they were looking
+for. Image recognition has been a very popular topic these past few years with
+the advancements in Neural Nets. One could attempt the approach with cameras
+again although that sounds invasive. 
