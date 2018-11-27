@@ -7,7 +7,7 @@ problems and analyze approaches and solutions that may or were used.
 This project should be done individually.
 The web sites: 
   - [SAS](https://www.sas.com/en_us/customers.html)
-  - [IMB](https://www03.ibm.com/software/businesscasestudies/us/en/corp)
+  - [IMB](https://www.ibm.com/case-studies)
   - [Informs](https://www.informs.org/Impact/O.R.-Analytics-Success-Stories)
   
 among others, contain  brief overviews of some major Analytics success 
