@@ -72,10 +72,53 @@ around NYc and finding the best route can be difficult. This will end up being a
 small piece that we will reuse in our simulation, as you can see from the quote
 extracted from the article. 
 
+#### Step 3
+  - Given: 
+    - Number, or estimated, of delivers in a day and week
+    - Number of stores, facilities, and businesses
+    - their locations
+    - Historic Traffic patters
+    - VRP output
+    - gas prices
+    - Average MPG for freight trucks
+    - Average shipping cost per mile
+    - Distributions of the data
+  - Use: Simulation models
+  - To: simulate the results of starting deliverys at different times and adding
+    restrictions to when deliversy can be some.
+
+Changing when deliveries may start or creating a window where they are allowed
+to be delivered will create different resutls. In addition to changing the width
+of the window of delivery, we can see how many deliveris are possible and how
+much it will cost. Because of randomness this simulation will have to be run
+many times to try and get an accurate prediciton of is the best time to have a
+window of delivery and quantify how much better it. It's important to see if a
+change in when deliveries should be done is _worth_ it. If we are only going to
+find a 1% improvment in efficiency, it may not be worth the hassle to add more
+regulation to the delivery industry. Currently drivers have a limit on the
+amount of hours they are able drive in a given day and some limitations on the
+roads they may use, depending the truck size. We also need to quantify it to
+select a winner. If there are three or four solutions that are better than the
+chaos that was going on, how do they know which is best? 
+
+Since many of these variables are not constant the team would have to do some
+research into the distirbution the data would fall into. For example, the
+arrival rate of trucks to a given area of the city may follow an exponential
+rate, which would mean the amount that arrive is Poisson. However, they may find
+it follows more of a normal distirbution, not likely but possible. The same for
+Traffic for a given part of the city at a particular time of day. This would all
+be needed to compute an accurate simulation of everything. 
+
+The simulation must be run on and checked with historical data to ensure we have
+an accurate model. If we cannot simulate historic patterns and results, we won't
+be able to have any confidence in our recommendations. 
 
 
 
-[option
-2](https://www.informs.org/Impact/O.R.-Analytics-Success-Stories/Industry-Profiles/Disney)
 
-option 3. soy bean yeilds
+
+> The team conducted extensive behavioral research on how receivers and carriers
+> would respond to policy measures intended to foster OHD, and integrated the
+> chief findings of the research in a behavioral microsimulation (BMS).
+  - Use: 
+  - To: 
